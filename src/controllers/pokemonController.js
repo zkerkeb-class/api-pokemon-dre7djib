@@ -1,5 +1,6 @@
 export const pokemonController = {
 
+    // Get all pokemons
     getAllPokemons : async (req, res, pokemonsList) => {
         try {
             const { page_number = 1, page_size = 10 } = req.query;
@@ -41,6 +42,7 @@ export const pokemonController = {
         }
     },
 
+    // Get pokemon by Id
     getPokemon : async (req, res, pokemonsList) => {
         try {
             const id = req.params.id;
@@ -54,6 +56,7 @@ export const pokemonController = {
         }
     },
 
+    // Add new pokemon
     addPokemon : async (req, res, pokemonsList) => {
         try {
             const newPokemon = req.body;
@@ -72,6 +75,7 @@ export const pokemonController = {
         }
     },
 
+    // Update pokemon with id
     updatePokemon : async (req, res, pokemonsList) => {
         try {
             const id = req.params.id;
@@ -91,6 +95,7 @@ export const pokemonController = {
         }
     },
 
+    // Delete 1 pokemon
     deletePokemon : async (req, res, pokemonsList) => {
         try {
             const id = req.params.id;
@@ -108,6 +113,7 @@ export const pokemonController = {
         }
     }, 
 
+    // Get pokemon with type
     getPokemonByType : async (req, res, pokemonsList) => {
         try {
             const type = req.params.type;
@@ -123,6 +129,7 @@ export const pokemonController = {
         }
     },
 
+    // Search pokemon with name 
     searchPokemonByName : async (req, res, pokemonsList) => {
         try {
             const name = req.params.name.toLowerCase();
