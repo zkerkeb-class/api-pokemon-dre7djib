@@ -9,6 +9,8 @@ import { PokemonSchema } from "./middleware/validation/validationSchema.js";
 import { pokemonController } from "./controllers/pokemonController.js";
 import verifyJwt from "./middleware/jwt/authMiddleware.js";
 import errorHandler from "./middleware/error/errorMiddleware.js";
+import swaggerUi from "swagger-ui-express";
+import swaggerJSDoc from "swagger-jsdoc";
 
 dotenv.config();
 
@@ -20,12 +22,24 @@ const pokemonsList = JSON.parse(fs.readFileSync(path.join(__dirname, './data/pok
 const app = express();
 const PORT = 3000;
 
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'API Pokémon Djibril',
+      version: '1.0.0',
+    },
+  },
+  apis: ['./src/index.js','./src/swagger/*.js'],
+};
+
 // Middleware pour CORS
 app.use(cors());
 
 // Middleware pour parser le JSON
 app.use(express.json());
 
+// Middleware Erreur
 app.use(errorHandler);
 
 // Middleware pour servir des fichiers statiques
@@ -35,11 +49,14 @@ app.use(errorHandler);
 // 'path.join(__dirname, '../assets')' construit le chemin absolu vers le dossier 'assets'
 app.use("/assets", express.static(path.join(__dirname, "../assets")));
 
+// Swagger
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJSDoc(options)));
+
+
 app.get("/", (req, res, next) => {
   res.send("bienvenue sur l'API Pokémon");
 });
 
-// Route GET de base
 app.get("/api/pokemons", (req, res, next) => {
   pokemonController.getAllPokemons(req, res, next, pokemonsList);
 });
