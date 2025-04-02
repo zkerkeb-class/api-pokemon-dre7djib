@@ -4,9 +4,10 @@ import fs from 'fs';
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
-import { validate } from "./validation/validation.js";
-import { PokemonSchema } from "./validation/validationSchema.js";
+import { validate } from "./middleware/validation/validation.js";
+import { PokemonSchema } from "./middleware/validation/validationSchema.js";
 import { pokemonController } from "./controllers/pokemonController.js";
+import verifyJwt from "./middleware/jwt/authMiddleware.js";
 
 dotenv.config();
 
@@ -52,7 +53,7 @@ app.put("/api/pokemons/:id", validate(PokemonSchema.updatePokemonSchema), (req, 
   pokemonController.updatePokemon(req, res, pokemonsList);
 });
 
-app.delete("/api/pokemons/:id", (req, res) => {
+app.delete("/api/pokemons/:id", verifyJwt, (req, res) => {
   pokemonController.deletePokemon(req, res, pokemonsList);
 });
 
